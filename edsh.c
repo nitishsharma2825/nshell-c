@@ -41,12 +41,12 @@ void processCommand(char* command) {
 //Add Main function code here
 int main(int argc, char *argv[]) {
     // getting hostname and logged in username
-    if (gethostname(hostname, sizeof(hostname) != 0)) {
+    if (gethostname(hostname, HOSTNAME_SIZE) != 0) {
         perror("gethostname");
         exit(EXIT_FAILURE);
     }
 
-    if (getlogin_r(username, sizeof(username)) != 0) {
+    if (getlogin_r(username, USERNAME_SIZE) != 0) {
         struct passwd *pw = getpwuid(geteuid());
         if (pw == NULL) {
             perror("getpwuid");
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
     }
 
     while (1) {
-        if (getcwd(directory, sizeof(directory)) == NULL) {
+        if (getcwd(directory, DIRECTORY_SIZE) == NULL) {
             perror("getcwid");
             exit(EXIT_FAILURE);
         }

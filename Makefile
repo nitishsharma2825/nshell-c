@@ -7,7 +7,7 @@ all: edsh
 edsh: $(OBJ)
 	$(CC) $(CFLAGS) -o edsh $(OBJ)
 
-%.o: %.c
+%.o: %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:
