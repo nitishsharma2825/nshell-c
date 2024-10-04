@@ -21,16 +21,20 @@ char directory[DIRECTORY_SIZE];
 void processCommand(char* command) {
     // removing leading whitespaces
     char *ptr = command;
-    while ((ptr != NULL) && isspace((unsigned char)*ptr)) {
+    while ((ptr != NULL) && isspace((unsigned char)*ptr))
+    {
         ptr++;
     }
-    if (ptr != command){
+
+    if (ptr != command)
+    {
         memmove(command, ptr, strlen(ptr) + 1);
     }
 
     // removing trailing whitespaces
     ptr = command + strlen(command) - 1;
-    while ( (ptr >= command ) && isspace((unsigned char)*ptr)) {
+    while ( (ptr >= command ) && isspace((unsigned char)*ptr))
+    {
         ptr--;
     }
     *(ptr+1) = '\0';
@@ -41,29 +45,35 @@ void processCommand(char* command) {
 //Add Main function code here
 int main(int argc, char *argv[]) {
     // getting hostname and logged in username
-    if (gethostname(hostname, HOSTNAME_SIZE) != 0) {
+    if (gethostname(hostname, HOSTNAME_SIZE) != 0)
+    {
         perror("gethostname");
         exit(EXIT_FAILURE);
     }
 
-    if (getlogin_r(username, USERNAME_SIZE) != 0) {
+    if (getlogin_r(username, USERNAME_SIZE) != 0)
+    {
         struct passwd *pw = getpwuid(geteuid());
-        if (pw == NULL) {
+        if (pw == NULL)
+        {
             perror("getpwuid");
             exit(EXIT_FAILURE);
         }
         snprintf(username, sizeof(username), "%s", pw->pw_name);
     }
 
-    while (1) {
-        if (getcwd(directory, DIRECTORY_SIZE) == NULL) {
+    while (1)
+    {
+        if (getcwd(directory, DIRECTORY_SIZE) == NULL)
+        {
             perror("getcwid");
             exit(EXIT_FAILURE);
         }
 
         fprintf(stdout, "%s%s@%s:%s%s> ", COLOR_CYAN, username, hostname, directory, COLOR_RESET);
 
-        if (fgets(input, sizeof(input), stdin) == NULL) {
+        if (fgets(input, sizeof(input), stdin) == NULL)
+        {
             perror("fgets");
             exit(EXIT_FAILURE);
         }
@@ -71,7 +81,8 @@ int main(int argc, char *argv[]) {
         // removing terminating \n
         input[strlen(input) - 1] = '\0';
 
-        if (strlen(input) > 0) {
+        if (strlen(input) > 0)
+        {
             processCommand(input);
         }   
     }
