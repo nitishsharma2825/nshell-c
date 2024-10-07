@@ -102,6 +102,42 @@ void edsh_cat()
     }
 }
 
+void edsh_pwd()
+{
+    char temp[DIRECTORY_SIZE];
+    if (getcwd(temp, DIRECTORY_SIZE) == NULL)
+    {
+        fprintf(stderr, "Failed to get current working directory");
+    }
+    else if (fprintf(out_fh, "%s\n", temp) < 0)
+    {
+        fprintf(stderr, "Failed to write to destination");
+    }
+}
+
+void edsh_cd()
+{
+    int n;
+    if (argnum == 1)
+    {
+        char temp[DIRECTORY_SIZE];
+        if (getcwd(temp, DIRECTORY_SIZE) == NULL)
+        {
+            fprintf(stderr, "Failed to get current working directory");
+        }
+        n = chdir(temp);
+    }
+    else
+    {
+        n = chdir(arguments[1]);
+    }
+    
+    if (n == -1)
+    {
+        fprintf(stderr, "\033[1;31mError changing directory: %s\n\033[0m", strerror(errno));
+    }
+}
+
 void executeCommands(char *command)
 {
     initialize_args();
@@ -130,7 +166,14 @@ void executeCommands(char *command)
     {
         edsh_cat();
     }
-    
+    else if (strcmp(arguments[0], "pwd") == 0)
+    {
+        edsh_pwd();
+    }
+    else if (strcmp(arguments[0], "cd") == 0)
+    {
+        edsh_cd();
+    }
     else
     {
         printf("\033[1;31mInvalid Command\n\033[0m");
