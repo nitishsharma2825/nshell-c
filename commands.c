@@ -20,7 +20,7 @@ void collect_args(char *command)
 {
     arguments[0] = strtok(command, " \n\t\r");
     argnum = 1;
-    for (int i = 0; i < ARGMAX; i++)
+    for (int i = 1; i < ARGMAX; i++)
     {
         arguments[i] = strtok(NULL, " \n\r\t");
         if (arguments[i] == NULL)
@@ -97,6 +97,7 @@ void edsh_cat()
         {
             fputc(c, out_fh);
         }
+        fputc('\n', out_fh);
         fclose(file);
     }
 }
